@@ -6,7 +6,7 @@
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
-  border: 1px solid #fdeedc;
+  border: 5px solid #fdeedc;
   overflow: hidden;
 
   &:hover {
@@ -53,7 +53,7 @@
     background-color: #fdeedc;
     border: 3px solid #ffd8a9;
     border-radius: 3px;
-    opacity: 0.8;
+    opacity: 0.9;
     position: absolute;
 
     & h2 {

@@ -1,16 +1,25 @@
-import CategoriesContainer from "./component/categories-container/categories-container.component";
-const App = () => {
-  const categories = [
-    { id: 1, title: "Choco", img: "img/category-choco-img.jpg" },
-    { id: 2, title: "Fruit", img: "img/category-fruit-img.jpg" },
-    { id: 3, title: "Icecleam", img: "img/category-icecleam-img.jpg" },
-    { id: 4, title: "Snack", img: "img/category-snack-img.jpg" },
-    { id: 5, title: "Sarad", img: "img/category-sarad-img.jpg" },
-  ];
+import { Route, Routes } from "react-router-dom";
+import Home from "./routes/home/home.component.jsx";
+import Navigation from "./routes/navigaiton/navigation.component.jsx";
+import SignIn from "./routes/sign-in/signIn.component.jsx";
+
+const H1 = () => {
   return (
     <div>
-      <CategoriesContainer categories={categories} />
+      <h1>I am H1 Page </h1>
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />} />
+        <Route path="h1" element={<H1 />} />
+        <Route path="sign-up" element={<SignIn />} />
+      </Route>
+    </Routes>
   );
 };
 
