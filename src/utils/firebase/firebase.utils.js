@@ -4,6 +4,8 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -19,26 +21,35 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.getCustomParameters({
+googleProvider.getCustomParameters({
   prompt: "select_account",
 });
 
+// getfirestore()でfirebasedbのセットアップ
 const db = getFirestore();
-export const createUserdocumentFromAuth = async function (user) {
+export const createUserdocumentFromAuth = async function (
+  user,
+  additonalInfo = {}
+) {
   try {
+    // doc(firevasedb,コレクション名、ドキュメント名)でドキュメントを作成
     const userdocument = doc(db, "user", user.uid);
+    // getDocでリファレンスを取得する
     const userSnapshot = await getDoc(userdocument);
 
+    //　existsでdatabaseにデータが存在してるか
     if (!userSnapshot.exists()) {
       const { displayName, email } = user;
       const createDate = new Date();
       try {
-        setDoc(userdocument, {
+        // setDoc(documment,追加したい内容)
+        await setDoc(userdocument, {
           displayName,
           email,
           createDate,
+          ...additonalInfo,
         });
       } catch (err) {
         throw new Error(err);
@@ -47,9 +58,23 @@ export const createUserdocumentFromAuth = async function (user) {
 
     return userdocument;
   } catch (err) {
-    console.log(`don't create new data ${err.message}`);
+    console.log(`don't create new data : ${err.message}`);
   }
 };
 
 export const auth = getAuth();
-export const signinWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signinWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signinWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signinUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) throw Error;
+  return await signInWithEmailAndPassword(auth, email, password);
+};
