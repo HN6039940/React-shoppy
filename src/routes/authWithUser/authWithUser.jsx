@@ -1,5 +1,5 @@
 import Signup from "../../component/signupForm/signupForm.component";
-import SignIn from "../../component/signin-form/signin-form";
+import SignIn from "../../component/signInForm/signInForm.component";
 // import { getRedirectResult } from "firebase/auth";
 // import { useEffect } from "react";
 // import {

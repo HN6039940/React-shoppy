@@ -13,19 +13,16 @@ const defaultFormField = {
   password: "",
 };
 
-const SignIn = ({ user }) => {
-  const logGoogleUser = async () => {
-    const response = await signinWithGooglePopup();
-    const { user } = response;
-    console.log(user);
-    createUserdocumentFromAuth(user);
-  };
-
+const SignIn = () => {
   const [formField, setFormField] = useState(defaultFormField);
   const { email, password } = formField;
   const clearFormField = () => setFormField(defaultFormField);
 
   useEffect(() => clearFormField(), []);
+
+  const logGoogleUser = async () => {
+    const response = await signinWithGooglePopup();
+  };
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -39,6 +36,7 @@ const SignIn = ({ user }) => {
       alert("ログイン完了しました");
       clearFormField();
     } catch (error) {
+      clearFormField();
       switch (error.code) {
         case "auth/wrong-password":
           alert("パスワードが違います");
@@ -51,8 +49,6 @@ const SignIn = ({ user }) => {
         default:
           alert("正しい情報を入力してください");
       }
-
-      clearFormField();
     }
   };
   return (

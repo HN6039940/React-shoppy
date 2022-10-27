@@ -14,7 +14,7 @@ const defaultFormField = {
   password: "",
   confirmPassword: "",
 };
-const Signup = ({ user, Redirect }) => {
+const Signup = () => {
   const [formField, setFormField] = useState(defaultFormField);
   const { displayName, email, password, confirmPassword } = formField;
   const clearFormField = () => setFormField(defaultFormField);
@@ -31,8 +31,9 @@ const Signup = ({ user, Redirect }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const { displayName, email, password, confirmPassword } = formField;
+
     if (password !== confirmPassword) {
-      alert("passwords dont much");
+      alert("パスワードが一致しません");
       return;
     }
 
