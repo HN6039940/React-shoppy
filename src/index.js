@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import App from "./App";
 import UserProvider from "./context/context.component";
+import ProductsProvider from "./context/product.context.jsx";
+import CardProvider from "./context/cardContext.component";
 import reportWebVitals from "./reportWebVitals";
 
 const container = document.getElementById("root");
@@ -12,7 +14,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <ProductsProvider>
+          <CardProvider>
+            <App />
+          </CardProvider>
+        </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
