@@ -14,13 +14,15 @@
   border-radius: 2px;
 
   .empty-item {
+    width: 100%;
     font-size: 1.8rem;
   }
 
   .cart-items {
+    overflow: scroll;
+    width: 100%;
     margin-top: auto;
     display: flex;
     flex-direction: column;
-    // overflow: scroll;
   }
 }
