@@ -4,6 +4,10 @@
     margin: 0 auto 2rem auto;
     font-size: 3rem;
     font-weight: bold;
+    span {
+      cursor: pointer;
+      color: darkcyan;
+    }
   }
   & .shop-grid-container {
     width: 95%;
