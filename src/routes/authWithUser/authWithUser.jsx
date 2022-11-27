@@ -1,5 +1,7 @@
 import Signup from "../../component/signupForm/signupForm.component";
 import SignIn from "../../component/signInForm/signInForm.component";
+
+import { SignUpContainer } from "./authWithUser.style";
 // import { getRedirectResult } from "firebase/auth";
 // import { useEffect } from "react";
 // import {
@@ -24,10 +26,10 @@ import SignIn from "../../component/signInForm/signInForm.component";
 
 const AuthWithUser = () => {
   return (
-    <div className="sign-up-container">
+    <SignUpContainer>
       <SignIn />
       <Signup />
-    </div>
+    </SignUpContainer>
   );
 };
 

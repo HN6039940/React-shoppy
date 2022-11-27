@@ -1,35 +1,39 @@
 import { useContext } from "react";
 import { CartContext } from "../../context/cartContext.component";
 import CheckOutItem from "../../component/checkout-item/checkOutItem.component";
-import "./checkout.style.scss";
+import {
+  CheckoutContainer,
+  CheckOutHeader,
+  HeaderBlock,
+} from "./checkout.style.jsx";
 const CheckOut = () => {
   const { cartItems, totalPrice } = useContext(CartContext);
   return (
-    <div className="checkout-container">
-      <div className="checkout-header">
-        <div className="header-block">
+    <CheckoutContainer>
+      <CheckOutHeader>
+        <HeaderBlock>
           <span>商品名</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlock>
+        <HeaderBlock>
           <span>説明</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlock>
+        <HeaderBlock>
           <span>数量</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlock>
+        <HeaderBlock>
           <span>値段</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlock>
+        <HeaderBlock>
           <span>削除</span>
-        </div>
-      </div>
+        </HeaderBlock>
+      </CheckOutHeader>
 
       {cartItems.map((cartitem) => {
-        return <CheckOutItem cartitem={cartitem} />;
+        return <CheckOutItem cartitem={cartitem} key={cartitem.id} />;
       })}
 
       <span className="total-price">合計:¥{totalPrice}</span>
-    </div>
+    </CheckoutContainer>
   );
 };
 

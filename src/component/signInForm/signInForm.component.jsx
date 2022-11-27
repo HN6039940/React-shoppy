@@ -6,7 +6,7 @@ import {
 } from "../../utils/firebase/firebase.utils";
 
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 const defaultFormField = {
   email: "",
@@ -73,13 +73,13 @@ const SignIn = () => {
       />
 
       <Button
-        buttonType="google"
+        buttonType={BUTTON_TYPE_CLASSES.google}
         type="submit"
         children={"Googleでログイン"}
         onClick={logGoogleUser}
       />
       <Button
-        buttonType="inverted"
+        buttonType={BUTTON_TYPE_CLASSES.general}
         type="submit"
         children={"ログイン"}
         onClick={logInHandler}

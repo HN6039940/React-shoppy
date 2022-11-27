@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/cartContext.component";
 import Button from "../button/button.component";
 import CartItem from "../cartitem/cartitem.component";
-import "./cartDropDown.style.scss";
+import {
+  CartDropDownContainer,
+  EmptyItem,
+  CartItemsContainer,
+} from "./cartDropDown.style";
 const CartDropDown = () => {
   const { cartItems } = useContext(CartContext);
   const navigation = useNavigate();
@@ -12,14 +16,18 @@ const CartDropDown = () => {
     navigation("checkout");
   };
   return (
-    <div className="cart-dropdown-container">
-      <div className="cart-items">
-        {cartItems.map((cartItem) => {
-          return <CartItem cartItem={cartItem} key={cartItem.id} />;
-        })}
-      </div>
+    <CartDropDownContainer>
+      <CartItemsContainer>
+        {cartItems.length ? (
+          cartItems.map((cartItem) => {
+            return <CartItem cartItem={cartItem} key={cartItem.id} />;
+          })
+        ) : (
+          <EmptyItem>カートは空です</EmptyItem>
+        )}
+      </CartItemsContainer>
       <Button children={`to checkout`} onClick={gotoCheckOutHandler} />
-    </div>
+    </CartDropDownContainer>
   );
 };
 
