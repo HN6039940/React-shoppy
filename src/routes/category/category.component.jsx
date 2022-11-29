@@ -9,7 +9,6 @@ const Category = () => {
   const { category } = useParams();
   const { categoriesMap } = useContext(CategoriesContext);
   const [product, setProduct] = useState(categoriesMap[category]);
-
   useEffect(() => {
     setProduct(categoriesMap[category]);
   }, [category, categoriesMap]);
