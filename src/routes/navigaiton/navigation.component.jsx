@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Fragment, useContext } from "react";
 import { ReactComponent as Homelogo } from "../../asset/doughnut-sweet-svgrepo-com.svg";
 import { UserContext } from "../../context/context.component";

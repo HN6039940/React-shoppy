@@ -7,9 +7,9 @@ import {
 } from "./cartlogo.style.jsx";
 
 const CartLogo = () => {
-  const { isOpen, setIsOpen, totalQuantity } = useContext(CartContext);
+  const { setIsOpen, totalQuantity } = useContext(CartContext);
   const toggle = () => {
-    setIsOpen(!isOpen);
+    setIsOpen();
   };
   return (
     <CartIconContainer onClick={toggle}>
