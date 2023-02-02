@@ -12,7 +12,6 @@ export const UserContext = createContext({
 
 const USER_ACTION_TYPE = {
   SET_CURRENT_USER: "SET_CURRENT_USER",
-  SET_COUNTER: "SET_COUNTER",
 };
 
 const UserReducer = (state, action) => {
@@ -24,11 +23,6 @@ const UserReducer = (state, action) => {
         currentUser: payload,
       };
 
-    case USER_ACTION_TYPE.SET_COUNTER:
-      return {
-        ...state,
-        counter: state.counter++,
-      };
     default:
       throw new Error("");
   }
@@ -37,7 +31,6 @@ const UserReducer = (state, action) => {
 const UserProvider = ({ children }) => {
   const INITIAL_STATE = {
     currentUser: null,
-    counter: 0,
   };
   // const [currentUser, setCurrentUser] = useState(null);
   const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
@@ -45,7 +38,6 @@ const UserProvider = ({ children }) => {
   const { currentUser } = state;
   const setCurrentUser = (user) => {
     dispatch({ type: USER_ACTION_TYPE.SET_CURRENT_USER, payload: user });
-    // dispatch({ type: USER_ACTION_TYPE.SET_COUNTER });
   };
   const value = { currentUser, setCurrentUser };
 
