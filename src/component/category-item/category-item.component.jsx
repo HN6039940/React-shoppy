@@ -1,19 +1,28 @@
-import "./category-item.style.scss";
+import { useNavigate } from "react-router-dom";
+import {
+  CategoryItemTitle,
+  CategoryDescription,
+  CategoryBackGroundImage,
+  CategoryBodyContainer,
+  CategoryContainer,
+} from "./category-item.style.jsx";
 const Category = ({ category }) => {
-  const { id, title, img } = category;
+  const { id, title, img, route } = category;
+  const Navigation = useNavigate();
+  const onClickNavHandler = () => {
+    Navigation(route);
+  };
   return (
-    <div className="category-container" key={id}>
-      <div
-        className="background-img"
-        style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/${img})`,
-        }}
-      />
-      <div className="category-body-container">
-        <h2 className="category-title">{title}</h2>
-        <p className="category-description">categorie-description</p>
-      </div>
-    </div>
+    <CategoryContainer key={id} onClick={onClickNavHandler}>
+      <CategoryBackGroundImage
+        img={`${process.env.PUBLIC_URL}/${img}`}
+      ></CategoryBackGroundImage>
+
+      <CategoryBodyContainer>
+        <CategoryItemTitle>{title}</CategoryItemTitle>
+        <CategoryDescription>description</CategoryDescription>
+      </CategoryBodyContainer>
+    </CategoryContainer>
   );
 };
 

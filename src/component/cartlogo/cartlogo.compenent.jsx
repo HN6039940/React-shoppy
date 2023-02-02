@@ -1,18 +1,27 @@
-import { useContext } from "react";
-import { ReactComponent as Cartlogo } from "../../asset/shopping-cart-svgrepo-com.svg";
-import { CardContext } from "../../context/cardContext.component";
-import "./cartlogo.style.scss";
+import { useSelector, useDispatch } from "react-redux";
+import { setIsOpen } from "../../store/categories/cart.action";
+import {
+  selectorIsOpen,
+  sumQuantity,
+} from "../../store/categories/cart.selector";
+import {
+  ShoppingIcon,
+  ItemCount,
+  CartIconContainer,
+} from "./cartlogo.style.jsx";
 
 const CartLogo = () => {
-  const { isOpen, setIsOpen } = useContext(CardContext);
+  const isOpen = useSelector(selectorIsOpen);
+  const totalQuantity = useSelector(sumQuantity);
+  const dispatch = useDispatch();
   const toggle = () => {
-    setIsOpen(!isOpen);
+    dispatch(setIsOpen(!isOpen));
   };
   return (
-    <div className="cart-icon-container" onClick={toggle}>
-      <Cartlogo className="shoping-icon" />
-      <span className="item-count">0</span>
-    </div>
+    <CartIconContainer onClick={toggle}>
+      <ShoppingIcon />
+      <ItemCount>{totalQuantity}</ItemCount>
+    </CartIconContainer>
   );
 };
 

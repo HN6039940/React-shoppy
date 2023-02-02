@@ -1,18 +1,31 @@
+import { useSelector, useDispatch } from "react-redux";
+import { addItemToCart } from "../../store/categories/cart.action.js";
+import { selectorCart } from "../../store/categories/cart.selector.js";
 import Button from "../button/button.component.jsx";
-import "./productCard.style.scss";
+import {
+  Footer,
+  ProductImgContainer,
+  ProductsCardContainer,
+} from "./productCard.style.jsx";
 const ProductCard = ({ product }) => {
+  const cartItems = useSelector(selectorCart);
+  const dispatch = useDispatch();
   const { id, imageUrl, name, price } = product;
+
+  const clickHandler = () => {
+    dispatch(addItemToCart(cartItems, product));
+  };
   return (
-    <div className="products-card-container" key={id}>
-      <div className="products-img-container">
+    <ProductsCardContainer key={id}>
+      <ProductImgContainer>
         <img src={imageUrl} alt={`${name}`} />
-      </div>
-      <div className="footer">
+      </ProductImgContainer>
+      <Footer>
         <h1 className="name">{name}</h1>
         <span className="price">{price}</span>
-      </div>
-      <Button children={`Add Cart`} />
-    </div>
+      </Footer>
+      <Button children={`Add Cart`} onClick={clickHandler} />
+    </ProductsCardContainer>
   );
 };
 

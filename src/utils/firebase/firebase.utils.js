@@ -10,7 +10,16 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAUctKF5uhxvghxHF0xm_AlppFU7eQa0rw",
@@ -31,17 +40,40 @@ googleProvider.getCustomParameters({
 
 // getfirestore()でfirebasedbのセットアップ
 const db = getFirestore();
+
+export const addCollectionAndDocument = async (collectionKey, objectData) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectData.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesAndDocuents = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((snapshot) => snapshot.data());
+};
+
 export const createUserdocumentFromAuth = async function (
   user,
   additonalInfo = {}
 ) {
   try {
-    // doc(firevasedb,コレクション名、ドキュメント名)でドキュメントを作成
+    // doc(firevasedb,コレクション名、ドキュメント名)でドキュメントリファレンスを作成
     const userdocument = doc(db, "user", user.uid);
     // getDocでリファレンスを取得する
+    // スナップショットは非同期で処理をする
     const userSnapshot = await getDoc(userdocument);
 
-    //　existsでdatabaseにデータが存在してるか
+    //　スナップショットを元にexistsでdatabaseにデータが存在してるか
     if (!userSnapshot.exists()) {
       const { displayName, email } = user;
       const createDate = new Date();
