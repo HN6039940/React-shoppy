@@ -6,7 +6,7 @@ import {
   UserSignOut,
   createUserdocumentFromAuth,
 } from "./utils/firebase/firebase.utils";
-import { setCurrentUser } from "./store/user/user.action";
+import { setCurrentUser, checkUserSeaction } from "./store/user/user.action";
 import Home from "./routes/home/home.component.jsx";
 import Navigation from "./routes/navigaiton/navigation.component.jsx";
 import AuthWithUser from "./routes/authWithUser/authWithUser.jsx";
@@ -17,18 +17,19 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     UserSignOut();
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        dispatch(
-          setCurrentUser({ displayName: user.displayName, email: user.email })
-        );
-        createUserdocumentFromAuth(user);
-      } else {
-        dispatch(setCurrentUser(null));
-      }
-    });
+    // const unsubscribe = onAuthStateChangedListener((user) => {
+    //   if (user) {
+    //     dispatch(
+    //       setCurrentUser({ displayName: user.displayName, email: user.email })
+    //     );
+    //     createUserdocumentFromAuth(user);
+    //   } else {
+    //     dispatch(setCurrentUser(null));
+    //   }
+    // });
 
-    return unsubscribe;
+    // return unsubscribe;
+    dispatch(checkUserSeaction());
   }, []);
 
   return (

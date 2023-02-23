@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { signinUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { useDispatch } from "react-redux";
 import {
-  signinWithGooglePopup,
-  createUserdocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
-
+  googleSigninInStart,
+  mailSignInStart,
+} from "../../store/user/user.action";
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
@@ -16,12 +15,12 @@ const defaultFormField = {
 const SignIn = () => {
   const [formField, setFormField] = useState(defaultFormField);
   const { email, password } = formField;
+  const dispatch = useDispatch();
   const clearFormField = () => setFormField(defaultFormField);
-
   useEffect(() => clearFormField(), []);
 
   const logGoogleUser = async () => {
-    const response = await signinWithGooglePopup();
+    dispatch(googleSigninInStart());
   };
 
   const changeHandler = (e) => {
@@ -31,25 +30,8 @@ const SignIn = () => {
 
   const logInHandler = async (e) => {
     e.preventDefault();
-    try {
-      const { user } = await signinUserWithEmailAndPassword(email, password);
-      alert("ログイン完了しました");
-      clearFormField();
-    } catch (error) {
-      clearFormField();
-      switch (error.code) {
-        case "auth/wrong-password":
-          alert("パスワードが違います");
-          break;
-        case "auth/too-many-requests":
-          alert(
-            "ログインに失敗しました 時間をおいてから再度ログインしてください"
-          );
-          break;
-        default:
-          alert("正しい情報を入力してください");
-      }
-    }
+    dispatch(mailSignInStart(email, password));
+    clearFormField();
   };
   return (
     <div>
