@@ -51,7 +51,6 @@ export const addCollectionAndDocument = async (collectionKey, objectData) => {
   });
 
   await batch.commit();
-  console.log("done");
 };
 
 export const getCategoriesAndDocuments = async (strings) => {
@@ -69,6 +68,7 @@ export const createUserdocumentFromAuth = async function (
   try {
     // doc(firevasedb,コレクション名、ドキュメント名)でドキュメントリファレンスを作成
     const userdocument = doc(db, "user", user.uid);
+
     // getDocでリファレンスを取得する
     // スナップショットは非同期で処理をする
     const userSnapshot = await getDoc(userdocument);
@@ -90,7 +90,7 @@ export const createUserdocumentFromAuth = async function (
       }
     }
 
-    return userdocument;
+    return userSnapshot;
   } catch (err) {
     console.log(`don't create new data : ${err.message}`);
   }
@@ -119,3 +119,16 @@ export const UserSignOut = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
