@@ -2,6 +2,7 @@ import { put, call, all, takeLatest, select } from "redux-saga/effects";
 import { USER_ACTION_TYPE } from "./user.types";
 import {
   createUserdocumentFromAuth,
+  createAuthUserWithEmailAndPassword,
   getCurrentUser,
   signinWithGooglePopup,
   signinUserWithEmailAndPassword,
@@ -15,11 +16,12 @@ export function* isGetUserDocSnapShot(userAuth, additonalInfo) {
       userAuth,
       additonalInfo
     );
-
+    const { email, displayName } = userSnapShot.data();
     yield put(
       SignInSuccess({
         id: userSnapShot.id,
-        ...userSnapShot.data(),
+        email: email,
+        displayName: displayName,
       })
     );
   } catch (error) {
@@ -66,6 +68,39 @@ export function* isUserLoginWithEmail() {
   }
 }
 
+export function* iscreateUserFromSignupData(email, password, displayName) {
+  try {
+    const { user } = yield call(
+      createAuthUserWithEmailAndPassword,
+      email,
+      password
+    );
+    yield call(isGetUserDocSnapShot, user, { displayName });
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export function* isUserSignUp() {
+  const { displayName, email, password, confirmPassword } = yield select(
+    (state) => state.user.formData
+  );
+  try {
+    if (password !== confirmPassword) {
+      alert("パスワードが一致しません");
+      throw new Error("パスワードが一致しません");
+    }
+    const user = yield call(
+      iscreateUserFromSignupData,
+      email,
+      password,
+      displayName
+    );
+  } catch (error) {
+    yield put(SignInFailted(error));
+  }
+}
+
 export function* oncheackGoogleLogIn() {
   yield takeLatest(USER_ACTION_TYPE.GOOGLE_SIGNIN_START, isUserLoginWithGoogle);
 }
@@ -78,10 +113,15 @@ export function* onCheakUserSeaction() {
   yield takeLatest(USER_ACTION_TYPE.CHECK_USER_SEACTION, isUserAuth);
 }
 
+export function* oncreateUserSignUp() {
+  yield takeLatest(USER_ACTION_TYPE.SIGNUP_START, isUserSignUp);
+}
+
 export function* userSaga() {
   yield all([
     call(onCheakUserSeaction),
     call(oncheackGoogleLogIn),
     call(oncheakEmailLogin),
+    call(oncreateUserSignUp),
   ]);
 }
