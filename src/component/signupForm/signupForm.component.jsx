@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserdocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
-
+import { SignupStart } from "../../store/user/user.action";
+import { useDispatch } from "react-redux";
 const defaultFormField = {
   displayName: "",
   email: "",
@@ -16,7 +13,7 @@ const Signup = () => {
   const [formField, setFormField] = useState(defaultFormField);
   const { displayName, email, password, confirmPassword } = formField;
   const clearFormField = () => setFormField(defaultFormField);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     clearFormField();
   }, []);
@@ -28,23 +25,8 @@ const Signup = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const { displayName, email, password, confirmPassword } = formField;
-
-    if (password !== confirmPassword) {
-      alert("パスワードが一致しません");
-      return;
-    }
-
-    try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      await createUserdocumentFromAuth(user, { displayName });
-      clearFormField();
-    } catch (error) {
-      console.error(error.message);
-    }
+    dispatch(SignupStart(formField));
+    clearFormField();
   };
 
   return (

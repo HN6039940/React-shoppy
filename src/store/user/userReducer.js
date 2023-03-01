@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   isloading: false,
   error: null,
   userInfomation: null,
+  formData: null,
 };
 export const UserReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
@@ -16,6 +17,7 @@ export const UserReducer = (state = INITIAL_STATE, action) => {
         isloading: false,
         error: null,
         userInfomation: null,
+        formData: null,
       };
     case USER_ACTION_TYPE.CHECK_USER_SEACTION:
       return { ...state, isloading: true };
@@ -25,7 +27,8 @@ export const UserReducer = (state = INITIAL_STATE, action) => {
       return { ...state, isloading: true };
     case USER_ACTION_TYPE.MAIL_SIGNIN_START:
       return { ...state, isloading: true, userInfomation: payload };
-
+    case USER_ACTION_TYPE.SIGNUP_START:
+      return { ...state, isloading: false, formData: payload };
     default:
       return state;
   }
