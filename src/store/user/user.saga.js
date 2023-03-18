@@ -6,8 +6,16 @@ import {
   getCurrentUser,
   signinWithGooglePopup,
   signinUserWithEmailAndPassword,
+  UserSignOut,
 } from "../../utils/firebase/firebase.utils";
-import { SignInFailted, SignInSuccess } from "./user.action";
+import {
+  SignInFailted,
+  SignInSuccess,
+  SignOutFailted,
+  SignOutSucces,
+  SignUpFailted,
+  SignupSuccess,
+} from "./user.action";
 
 export function* isGetUserDocSnapShot(userAuth, additonalInfo) {
   try {
@@ -42,10 +50,8 @@ export function* isUserAuth() {
 
 export function* isUserLoginWithGoogle() {
   try {
-    const userInfoFromGoogle = yield call(signinWithGooglePopup);
-    yield put(
-      SignInSuccess({ id: userInfoFromGoogle.uid, ...userInfoFromGoogle })
-    );
+    const { user } = yield call(signinWithGooglePopup);
+    yield call(isGetUserDocSnapShot, user);
   } catch (error) {
     yield put(SignInFailted(error));
   }
@@ -68,36 +74,42 @@ export function* isUserLoginWithEmail() {
   }
 }
 
-export function* iscreateUserFromSignupData(email, password, displayName) {
+export function* iscreateUserFromSignupData({
+  payload: { user, displayName },
+}) {
   try {
-    const { user } = yield call(
-      createAuthUserWithEmailAndPassword,
-      email,
-      password
-    );
     yield call(isGetUserDocSnapShot, user, { displayName });
   } catch (error) {
     throw new Error(error);
   }
 }
 
-export function* isUserSignUp() {
-  const { displayName, email, password, confirmPassword } = yield select(
-    (state) => state.user.formData
-  );
+export function* isUserSignUp({
+  payload: { displayName, email, password, confirmPassword },
+}) {
   try {
     if (password !== confirmPassword) {
       alert("パスワードが一致しません");
       throw new Error("パスワードが一致しません");
     }
-    const user = yield call(
-      iscreateUserFromSignupData,
+    const { user } = yield call(
+      createAuthUserWithEmailAndPassword,
       email,
-      password,
-      displayName
+      password
     );
+
+    yield put(SignupSuccess(user, displayName));
   } catch (error) {
-    yield put(SignInFailted(error));
+    yield put(SignUpFailted(error));
+  }
+}
+
+export function* isUserSignOut() {
+  try {
+    yield call(UserSignOut);
+    yield put(SignOutSucces());
+  } catch (error) {
+    yield put(SignOutFailted(error));
   }
 }
 
@@ -117,11 +129,20 @@ export function* oncreateUserSignUp() {
   yield takeLatest(USER_ACTION_TYPE.SIGNUP_START, isUserSignUp);
 }
 
+export function* userSignUpAfterSignIn() {
+  yield takeLatest(USER_ACTION_TYPE.SIGNUP_SUCCESS, iscreateUserFromSignupData);
+}
+
+export function* onUserSignOut() {
+  yield takeLatest(USER_ACTION_TYPE.SIGNOUT_START, isUserSignOut);
+}
 export function* userSaga() {
   yield all([
     call(onCheakUserSeaction),
     call(oncheackGoogleLogIn),
     call(oncheakEmailLogin),
     call(oncreateUserSignUp),
+    call(userSignUpAfterSignIn),
+    call(onUserSignOut),
   ]);
 }

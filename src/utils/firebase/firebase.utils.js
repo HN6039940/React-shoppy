@@ -85,6 +85,8 @@ export const createUserdocumentFromAuth = async function (
           createDate,
           ...additonalInfo,
         });
+        const userSnapShot = await getDoc(userdocument);
+        return userSnapShot;
       } catch (err) {
         throw new Error(err);
       }
