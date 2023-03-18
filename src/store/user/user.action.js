@@ -17,3 +17,12 @@ export const SignInFailted = (error) =>
   createAction(USER_ACTION_TYPE.SIGNIN_FAILTED, error);
 export const SignupStart = (formData) =>
   createAction(USER_ACTION_TYPE.SIGNUP_START, formData);
+export const SignupSuccess = (user, displayName) =>
+  createAction(USER_ACTION_TYPE.SIGNUP_SUCCESS, { user, displayName });
+export const SignUpFailted = (error) =>
+  createAction(USER_ACTION_TYPE.SIGNUP_FAILTED, error);
+export const SignOutStart = () => createAction(USER_ACTION_TYPE.SIGNOUT_START);
+export const SignOutSucces = () =>
+  createAction(USER_ACTION_TYPE.SIGNOUT_SUCCESS);
+export const SignOutFailted = (error) =>
+  createAction(USER_ACTION_TYPE.SIGNOUT_FAILTED, error);

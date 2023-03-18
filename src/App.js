@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  onAuthStateChangedListener,
-  UserSignOut,
-  createUserdocumentFromAuth,
-} from "./utils/firebase/firebase.utils";
-import { setCurrentUser, checkUserSeaction } from "./store/user/user.action";
+import { UserSignOut } from "./utils/firebase/firebase.utils";
+import { checkUserSeaction } from "./store/user/user.action";
 import Home from "./routes/home/home.component.jsx";
 import Navigation from "./routes/navigaiton/navigation.component.jsx";
 import AuthWithUser from "./routes/authWithUser/authWithUser.jsx";
