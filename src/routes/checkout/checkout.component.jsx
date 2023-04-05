@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { totalItemPrice } from "../../store/categories/cart.selector";
 import CheckOutItem from "../../component/checkout-item/checkOutItem.component";
+import PaymentForm from "../../component/payment-form/payment-form.compenent";
 import {
   CheckoutContainer,
   CheckOutHeader,
@@ -35,6 +36,7 @@ const CheckOut = () => {
       })}
 
       <span className="total-price">合計:¥{totalPrice}</span>
+      <PaymentForm />
     </CheckoutContainer>
   );
 };

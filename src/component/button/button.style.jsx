@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { SpinnerContainer } from "../spinner/spinner.style.jsx";
+
 export const ButtonContainer = styled.button`
   min-width: 15rem;
   min-height: 5rem;
@@ -40,13 +42,20 @@ export const InvertedButton = styled(ButtonContainer)`
   }
 `;
 
-// .btn-container {
-
-//   &.google-sign-in {
-
-//   }
-
-//   &.inverted {
-
-//   }
-// }
+export const SpinnerButton = styled(SpinnerContainer)`
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  width: 30px;
+  height: 30px;
+  border-top-color: #444444;
+  animation: spin 1s ease-in-out infinite;
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+`;
