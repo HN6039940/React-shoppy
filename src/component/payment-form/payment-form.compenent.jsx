@@ -69,3 +69,7 @@ const PaymentForm = () => {
 };
 
 export default PaymentForm;
+
+// connfig = {root:"",storage,whitelist:[]}
+// const sagaMiddleware = crreateSagaMiddleWare()
+// const const middleWare =[process.env.NODE]
